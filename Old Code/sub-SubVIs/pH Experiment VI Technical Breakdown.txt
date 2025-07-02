@@ -1,0 +1,79 @@
+****TA, Instructor, and Technical Staff ONLY!!!****
+
+***This refers to the latest VIs as of 12/2/2016***
+
+***pH Controller Experiment VI Breakdowns(DESKTOP VERSION):
+
+Main 4 VIs:
+
+1) Pump Check (AD Check) v1_0.vi:
+	Manually controls the Acid and Base pumps. Purpose of this VI is to test the connectivity between the NI CB-68LP and the pumps. However, students can utilize it to prep the Acid and Base lines at the beginning of the Lab Section or set the starting pH level for each trial. It is able to control both pumps individually and at the same time. When the stop button is pressed, regardless of the voltage input, the VI sends a 0 Volt signal to both pumps, shutting them down.
+
+2) pH Datalogger v1_0.vi:
+	Records the pH level and controls one pump at a time. Students are able to adjust the "Time Save Interval", "Voltage Input" and "Pump Selection". The pump and voltage input should be set before running the VI and not be changed to prevent any irregularity when its recording. They would use this VI to construct the titration curve, and for the open loop step response test. The results will be saved to a text file automatically, while the VI is running. When the students are ready, they should click the "Stop and Save" button; this will shut down the VI and the pumps automatically, regardless of the voltage input
+
+3) Vernier pH Meter v1_0.vi
+	Reads from and calibrates the Vernier pH Probe. This VI allows the student to test the probe with calibration solutions and set an offset if needed. There are a simple set of instructions on the VI to save the offset. From past experience, students would use the "pH Datalogger" VI to set the pH level to their desired parameter; However, this VI and Pump Check (AD Check) v1_0.vi are designed to run at the same time. This would be a good option to avoid going through the process creating a save file (This would avoid cluttering the computer with useless files). 
+
+4) pH Controller v1_1 July 2016.vi
+	Demonstrates the operation of a PID controller and its application in maintaining a constant pH level. Students are able to change the tuning parameters and  turn on or off the "Anti-Windup" feature to observe its affects on the controller. The results will be displayed on the graph and there is a visual aide that depicts which pump is active during the trial. The "Set Value" can be changed anytime which gives them the option to test their controller's response to change. Data is displayed on the graph and saved in a text file. This VI and the "Custom PID v1_2" subVI have been locked from editing, but their Block Diagrams may be view at anytime if students wish to view it. Instructions are below
+
+	The Main 4 VIs requires the following SubVI to function properly (may vary between main VIs):
+****All subVIs are located in the SubVI folder;C:\Users\CENG176 Student\Desktop\pH Controller Desktop Version\SubVIs*****
+
+% span to Voltage v1_0.vi (1 & 2)
+	Converts the controller output from the "Custom PID v1_2" VI to a voltage signal for the pumps. Since there are two different pumps, there needs to be two versions of this subIV in order to maintain the same flow rate. For the first version, the upper/lower bounds are 2.65 V to 0 V, respectively. For the second version, the upper/lower bounds are 10 V to 0 V, respectively.
+
+2 Channel Analog Output v1_0.vi
+	Generates channel path for main VIs to control the pumps. Similar to "Pump Check (AD Check) v1_0", this subVI can also control the pumps directly; however, it can also control the NI CB-68LP's limits directly and reset the channel to accommodate new DAQ equipment. This is a more customizable option when compared to built in "DAQ Assistant" Express VI.
+
+Custom PID v1_2.vi
+	Simplified PID controller for instructional purposes. It is written in ideal form (formula on "pH Controller v1_1 July 2016" VI's front panel) and provides the same basic functionality as the LabView's default PID VI. Besides the tuning parameters, Anti-Windup is added to limit the integral action to +/- 100 output. This prevents the I component from saturating the output signal which causes a massive overshoot. Students are able to switch off the feature and observe its affects. Since this subVI is locked, they will only be able to view its front panel and block diagram, but won't be able to change anything. However, if edits are needed, press "CTRL + M" and click unlock in the pop-up window. To lock the VI:
+1) click "File>>VI Properties"
+2) Select "Protection" in the Category menu
+3) Select "Locked (no password)" and click "OK"
+4) Save VI (CTRL + S)
+	If students wish to view the subVI, start from the "pH Controller v1_1 July 2016" VI's front panel.
+1) Click "Show Block Diagram" under Window to open the block diagram, or press "CTRL + M"
+2) Double Click "Custom PID v1.2.vi" to open its front panel
+3) From "Custom PID v1.2.vi" front Panel, open the block diagram (step 1)
+
+pH to % v1_0.vi
+	Converts the pH from the Vernier pH Probe to a % value for "Custom PID v1_2" VI. Similar to "% span to Voltage v1_0.vi", but the limits are from 0 to 14.
+
+Vernier ph Read v1_0
+	Using the express VIs from Vernier, directly communicates with the pH probe using the Go!Link. The user is able to control the Sampling Rate and the Amount of Samples taken. The output value is the average of the readings
+
+***Basic Operation:
+
+	pH Controller v1_1 July 2016.vi
+1) Set "Tuning Parameters (Kc, Ti, Td)", and "Set Value"
+
+2) Click "Single Run" and create a save file
+
+3) When ready, click "Stop and Save" to stop recording and the pumps
+
+	pH Datalogger v1_0.vi
+1) Set "Time Save Interval", "Pump Selection", and "Voltage Input"; *Note: Recommended Voltage Input < 3 Volts*
+
+2) Click "Single Run" and create a save file
+
+3) When ready, click "Stop and Save" to stop recording and the pump
+
+*Note: Procedure is the same for both Titration Curve and Open-Loop Step Response*
+
+	Vernier pH Meter v1_0.vi
+1) Click "Continuous Run"
+
+2) Test pH probe with Standard Buffers (Calibration Solutions).
+
+3) Set "Offset" and make current value default; Instructions are on the VI
+
+4) Click "Abort Execution" to shut off VI (Stop button next to Continuous Run)
+
+	Pump Check (AD Check) v1.0.vi
+1) Click "Single Run"
+
+2) Slide scroller to control pump speed; Using a waste beaker with water, prime both lines by controlling one pump at a time. When line is filled with acid/base, zero out scrollers
+
+3) Click "Stop" to shut off both pumps and the VI

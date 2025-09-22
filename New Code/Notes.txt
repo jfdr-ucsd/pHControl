@@ -1,0 +1,7 @@
+To run the ph_datalogger_v1 GUI, open a command prompt, and run
+1. ipython
+2. cd Path\\To\\This\\Folder
+3. %gui qt
+4. %run ph_datalogger_v1.py
+
+note: exiting the GUI kills the ipython kernel, but starting it up again works fine.
